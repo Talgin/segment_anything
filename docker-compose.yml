@@ -1,0 +1,26 @@
+version: '3'
+services:
+  segment_anything:
+    image: talgin/segment_anything:v1
+    container_name: segment_anything
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ${PWD}:/project_root
+    working_dir: /project_root
+    shm_size: 1g
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
+    command: tail -F /dev/null
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
