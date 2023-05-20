@@ -3,6 +3,7 @@ services:
   segment_anything:
     image: talgin/segment_anything:v1
     container_name: segment_anything
+    runtime: nvidia
     restart: unless-stopped
     network_mode: host
     volumes:
@@ -13,10 +14,11 @@ services:
       memlock: -1
       stack: 67108864
     environment:
-      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_VISIBLE_DEVICES=0
       - LC_ALL=C.UTF-8
       - LANG=C.UTF-8
-    command: tail -F /dev/null
+    # command: tail -F /dev/null
+    command: sh -c "jupyter notebook --allow-root --port 8181"
     deploy:
       resources:
         reservations:
